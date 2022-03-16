@@ -1,6 +1,6 @@
 import app from "./app";
 
-const PORT = 4005;
+import { PORT } from "./config/secrets";
 
 try {
   app.listen(PORT, () => console.log(`Server Started on port ${PORT}`));

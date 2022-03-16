@@ -2,7 +2,9 @@ import logger from "./logger";
 import dotenv from "dotenv";
 import fs from "fs";
 
-export const ENVIRONMENT = process.env.NODE_ENV;
+// fallbacks to .env.production and can be served in production
+
+export const ENVIRONMENT = process.env.NODE_ENV || "production";
 
 if (fs.existsSync(`.env.${ENVIRONMENT}`)) {
   logger.debug(
