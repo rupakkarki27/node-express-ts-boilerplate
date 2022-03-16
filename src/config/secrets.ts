@@ -2,16 +2,19 @@ import logger from "./logger";
 import dotenv from "dotenv";
 import fs from "fs";
 
-if (fs.existsSync(".env")) {
-  logger.debug("Using .env file to supply config environment variables");
-  dotenv.config({ path: ".env" });
+export const ENVIRONMENT = process.env.NODE_ENV;
+
+if (fs.existsSync(`.env.${ENVIRONMENT}`)) {
+  logger.debug(
+    `Using .env.${ENVIRONMENT} file to supply config environment variables`
+  );
+  dotenv.config({ path: `.env.${ENVIRONMENT}` });
 } else {
   logger.debug(
     "Using .env.example file to supply config environment variables"
   );
   dotenv.config({ path: ".env.example" }); // you can delete this after you create your own .env file!
 }
-export const ENVIRONMENT = process.env.NODE_ENV;
 
 export const PORT = process.env["PORT"];
 export const API_BASE_APP = process.env["API_BASE_APP"];

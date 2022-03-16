@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev --pretty --transpile-only ./src/index.ts",
-    "build-ts": "tsc",
+    "start": "NODE_ENV=development ts-node-dev --pretty --transpile-only ./src/index.ts",
+    "build-ts": "NODE_ENV=production tsc",
     "test": "jest --verbose",
     "serve-debug": "nodemon dist/index.js"
   },
