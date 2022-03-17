@@ -1,18 +1,15 @@
 import logger from "../config/logger";
 
 import { Request, Response } from "express";
-import { makeDataObject, makeErrorObject } from "../helpers/makeResponse";
 import { isValidObjectId } from "mongoose";
 import { ProductService } from "../services";
+import JSONResponse from "../helpers/JSONResponse";
 
 const productService = new ProductService();
 
 // retrives all the products for a shop
 // TODO: Project only needed product details
-export const getShopProducts = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+export const getShopProducts = async (req: Request, res: Response) => {
   try {
     const { shopId } = req.params;
 
@@ -23,20 +20,16 @@ export const getShopProducts = async (
       shop: shopId,
     });
 
-    return res
-      .status(200)
-      .json(makeDataObject("All products of shop", { products }));
+    JSONResponse.success(req, res, products, "All products of shop");
   } catch (e) {
     logger.error(e.message);
-    return res.status(500).json(makeErrorObject(e.message));
+
+    JSONResponse.error(req, res, e.message);
   }
 };
 
 // retrives a single product detail of a shop from all the products
-export const getProduct = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+export const getProduct = async (req: Request, res: Response) => {
   try {
     const { shopId, productId } = req.params;
 
@@ -48,37 +41,27 @@ export const getProduct = async (
       shop: shopId,
     });
 
-    return res.status(200).json(makeDataObject("Product Detail", { product }));
+    JSONResponse.success(req, res, product, "Product Detail");
   } catch (e) {
     logger.error(e.message);
-    return res.status(500).json(makeErrorObject("Cannot fetch product."));
+    JSONResponse.error(req, res, e.message);
   }
 };
 
 // retrives all products
-export const getProducts = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+export const getProducts = async (req: Request, res: Response) => {
   try {
     const allProducts = await productService.findProducts({});
 
-    return res
-      .status(200)
-      .json(makeDataObject("All Products", { products: allProducts }));
+    JSONResponse.success(req, res, allProducts, "Details");
   } catch (e) {
     logger.error(e.message);
-    return res
-      .status(500)
-      .json(makeErrorObject("Error while fetching products."));
+    JSONResponse.error(req, res, e.message);
   }
 };
 
 // add a new product for a shop
-export const addProduct = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+export const addProduct = async (req: Request, res: Response) => {
   try {
     const { body } = req;
 
@@ -86,22 +69,20 @@ export const addProduct = async (
       ...body,
     });
 
-    return res
-      .status(200)
-      .json(
-        makeDataObject("Product added Successfully", { product: newProduct })
-      );
+    JSONResponse.success(
+      req,
+      res,
+      { product: newProduct },
+      "Product added successfully"
+    );
   } catch (e) {
     logger.error(e.message);
-    return res.status(500).json(makeErrorObject(e.message));
+    JSONResponse.error(req, res, e.message);
   }
 };
 
 // update the product of a shop
-export const updateProduct = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { shopId, productId } = req.params;
     const body = req.body;
@@ -113,18 +94,15 @@ export const updateProduct = async (
 
     if (!product) throw new Error("Error while updating product");
 
-    return res.status(200).json(makeDataObject("Successfully updated product"));
+    JSONResponse.success(req, res, { product }, "Successfully updated product");
   } catch (e) {
     logger.error(e.message);
-    return res.status(500).json(makeErrorObject(e.message));
+    JSONResponse.error(req, res, e.message);
   }
 };
 
 // delete a product of a shop
-export const deleteProduct = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { shopId, productId } = req.params;
 
@@ -135,18 +113,15 @@ export const deleteProduct = async (
 
     if (!product) throw new Error("Error while deleting product");
 
-    return res.status(200).json(makeDataObject("Successfully deleted product"));
+    JSONResponse.success(req, res, product, "Successfully deleted product");
   } catch (e) {
     logger.error(e.message);
-    return res.status(500).json(makeErrorObject(e.message));
+    JSONResponse.error(req, res, e.message);
   }
 };
 
 // makes a product of shop unavailable
-export const toggleAvailability = async (
-  req: Request,
-  res: Response
-): Promise<Response> => {
+export const toggleAvailability = async (req: Request, res: Response) => {
   try {
     const { shopId, productId } = req.params;
     const body = req.body;
@@ -158,9 +133,9 @@ export const toggleAvailability = async (
 
     if (!product) throw new Error("Error while toggling status");
 
-    return res.status(200).json(makeDataObject("Updated product availability"));
+    JSONResponse.success(req, res, product, "Updated product availability");
   } catch (e) {
     logger.error(e.message);
-    return res.status(500).json(makeErrorObject(e.message));
+    JSONResponse.error(req, res, e.message);
   }
 };
