@@ -1,5 +1,5 @@
 import { Aggregate, FilterQuery } from "mongoose";
-import Product, { IProduct } from "../models/product";
+import Product, { IProduct } from "../models/product.model";
 
 export default class ProductService {
   /**
