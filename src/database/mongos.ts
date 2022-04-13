@@ -6,10 +6,14 @@ export default class MongoService {
   connect() {
     mongoose
       .connect(MONGODB_URI)
-      .then(() => logger.info("Connected to MONGODB database"))
+      .then(() => {
+        logger.info("Connected to MONGODB database");
+      })
       .catch((e) => logger.error(e.message));
   }
   disconnect() {
-    mongoose.disconnect().then(() => logger.info("Database disconnected"));
+    mongoose.disconnect().then(() => {
+      logger.info("Database disconnected");
+    });
   }
 }

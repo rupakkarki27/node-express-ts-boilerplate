@@ -5,7 +5,12 @@ import JSONResponse from "../helpers/JSONResponse";
 import { NextFunction, Request, Response } from "express";
 import { JWT_SECRET } from "../config/secrets";
 
-export const signupControlelr = async (
+/**
+ * The signup controller uses the local signup strategy,
+ * the strategy handles all the logic and then the controller
+ * responds accordingly
+ */
+export const signupController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -22,6 +27,12 @@ export const signupControlelr = async (
     JSONResponse.success(req, res, { user: user }, "Signup successful");
   })(req, res, next);
 };
+
+/**
+ * the login controller uses the signin strategy,
+ * which checks the password from the user and then
+ * gives appropriate response
+ */
 
 export const loginController = async (
   req: Request,
