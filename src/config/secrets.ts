@@ -13,9 +13,9 @@ if (fs.existsSync(`.env.${ENVIRONMENT}`)) {
   dotenv.config({ path: `.env.${ENVIRONMENT}` });
 } else {
   logger.debug(
-    "Using .env.example file to supply config environment variables"
+    "Using .env.development file to supply config environment variables"
   );
-  dotenv.config({ path: ".env.example" }); // you can delete this after you create your own .env file!
+  dotenv.config({ path: ".env.development" }); // you can delete this after you create your own .env file!
 }
 
 export const PORT = process.env["PORT"];
